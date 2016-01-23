@@ -1,6 +1,5 @@
 # vim-mode-plus-replace-with-execution
 
-
 This is operator plugin for [vim-mode-plus](https://atom.io/packages/vim-mode-plus).  
 
 Replace selected text with the result of stdout of execution.  
