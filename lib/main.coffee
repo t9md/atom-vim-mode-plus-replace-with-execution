@@ -1,14 +1,13 @@
 {CompositeDisposable} = require 'atom'
-
-Config =
-  registerToSelectList:
-    description: 'register as member of transformers for TransformStringBySelectList'
-    type: 'boolean'
-    default: true
+LineEndingRegExp = /(?:\n|\r\n)$/
 
 CommandPrefix = 'vim-mode-plus-user'
 module.exports =
-  config: Config
+  config:
+    registerToSelectList:
+      description: 'Register as member of transformers for TransformStringBySelectList at Atom startup'
+      type: 'boolean'
+      default: false
 
   activate: ->
     @subscriptions = new CompositeDisposable
@@ -22,9 +21,9 @@ module.exports =
 
   consumeVim: ({Base}) ->
     TransformStringByExternalCommand = Base.getClass('TransformStringByExternalCommand')
+
     class ReplaceWithExecution extends TransformStringByExternalCommand
       @commandPrefix: CommandPrefix
-      autoIndent: true
 
       getCommand: (selection) ->
         text = selection.getText()
@@ -33,15 +32,28 @@ module.exports =
         args = args.filter((arg) -> arg.length)
         {command, args}
 
+      getStdin: (selection) ->
+        null
+
+      getNewText: (text, selection) ->
+        stdout = @getStdout(selection)
+        if LineEndingRegExp.test(text)
+          stdout
+        else
+          stdout.replace(LineEndingRegExp, '')
+
     class ReplaceWithExecutionKeepOriginalText extends ReplaceWithExecution
       @commandPrefix: CommandPrefix
-      getNewText: (text) ->
-        text + "\n" + @input.shift()
+      getNewText: (text, selection) ->
+        stdout = super
+        stdout = "\n" + stdout unless LineEndingRegExp.test(text)
+        text + stdout
 
     @subscribe(
       ReplaceWithExecution.registerCommand()
       ReplaceWithExecutionKeepOriginalText.registerCommand()
     )
-    TransformStringBySelectList = Base.getClass('TransformStringBySelectList')
-    TransformStringBySelectList::transformers.push(ReplaceWithExecution)
-    TransformStringBySelectList::transformers.push(ReplaceWithExecutionKeepOriginalText)
+    if atom.config.get('vim-mode-plus-replace-with-execution.registerToSelectList')
+      TransformStringBySelectList = Base.getClass('TransformStringBySelectList')
+      TransformStringBySelectList::transformers.push(ReplaceWithExecution)
+      TransformStringBySelectList::transformers.push(ReplaceWithExecutionKeepOriginalText)
