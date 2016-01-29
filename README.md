@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/t9md/atom-vim-mode-plus-replace-with-execution.svg?branch=master)](https://travis-ci.org/t9md/atom-vim-mode-plus-replace-with-execution)
+
 # vim-mode-plus-replace-with-execution
 
 This is operator plugin for [vim-mode-plus](https://atom.io/packages/vim-mode-plus).  
