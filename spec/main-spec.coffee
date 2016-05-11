@@ -32,11 +32,11 @@ describe "vim-mode-plus-replace-with-execution", ->
           cursor: [0, 0]
 
     it "replace with execution", ->
-      keystroke ['V', {ctrl: 'r'}], waitsForFinish: true
+      keystroke('V ctrl-r', waitsForFinish: true)
       runs ->
         ensure text: "ABC\n"
 
     it "replace with execution and keeping keep original text", ->
-      keystroke ['V', {ctrl: 'R'}], waitsForFinish: true
+      keystroke('V ctrl-R', waitsForFinish: true)
       runs ->
         ensure text: "echo ABC\nABC\n"
