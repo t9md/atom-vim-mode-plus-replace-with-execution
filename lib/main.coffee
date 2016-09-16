@@ -1,20 +1,21 @@
 {CompositeDisposable} = require 'atom'
 LineEndingRegExp = /(?:\n|\r\n)$/
 
-CommandPrefix = 'vim-mode-plus-user'
+settings =
+  registerToSelectList:
+    description: 'Register as member of transformers for TransformStringBySelectList at Atom startup'
+    type: 'boolean'
+    default: false
+
 module.exports =
-  config:
-    registerToSelectList:
-      description: 'Register as member of transformers for TransformStringBySelectList at Atom startup'
-      type: 'boolean'
-      default: false
+  config: settings
 
   activate: ->
     @subscriptions = new CompositeDisposable
 
   deactivate: ->
     @subscriptions?.dispose()
-    @subscriptions = {}
+    [@subscriptions] = []
 
   subscribe: (args...) ->
     @subscriptions.add args...
@@ -23,8 +24,9 @@ module.exports =
     TransformStringByExternalCommand = Base.getClass('TransformStringByExternalCommand')
 
     class ReplaceWithExecution extends TransformStringByExternalCommand
-      @commandPrefix: CommandPrefix
+      @commandPrefix: 'vim-mode-plus-user'
 
+      # Extract command to use from selected texxt
       getCommand: (selection) ->
         text = selection.getText()
         return null unless text = text?.trim()
@@ -43,17 +45,17 @@ module.exports =
           stdout.replace(LineEndingRegExp, '')
 
     class ReplaceWithExecutionKeepOriginalText extends ReplaceWithExecution
-      @commandPrefix: CommandPrefix
+      @commandPrefix: 'vim-mode-plus-user'
       getNewText: (text, selection) ->
         stdout = super
         stdout = "\n" + stdout unless LineEndingRegExp.test(text)
         text + stdout
 
+    if settings.registerToSelectList
+      ReplaceWithExecution.registerToSelectList()
+      ReplaceWithExecutionKeepOriginalText.registerToSelectList
+
     @subscribe(
       ReplaceWithExecution.registerCommand()
       ReplaceWithExecutionKeepOriginalText.registerCommand()
     )
-    if atom.config.get('vim-mode-plus-replace-with-execution.registerToSelectList')
-      TransformStringBySelectList = Base.getClass('TransformStringBySelectList')
-      TransformStringBySelectList::transformers.push(ReplaceWithExecution)
-      TransformStringBySelectList::transformers.push(ReplaceWithExecutionKeepOriginalText)
