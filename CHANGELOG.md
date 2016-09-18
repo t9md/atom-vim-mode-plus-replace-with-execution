@@ -1,3 +1,6 @@
+## 0.1.3
+- Fix to catch-up upstream(vim-mode-plus) change.
+
 ## 0.1.2
 - Use new spec keystroke syntax.
 
