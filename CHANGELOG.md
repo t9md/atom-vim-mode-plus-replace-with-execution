@@ -1,3 +1,8 @@
+## 0.2.0
+- Maintenance:
+  - Convert Coffee-to-JS
+  - Also make vmp commands compatible with upcoming ES6-class-based-vmp-operations.
+
 ## 0.1.3
 - Fix to catch-up upstream(vim-mode-plus) change.
 
