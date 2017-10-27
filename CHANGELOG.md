@@ -1,3 +1,8 @@
+## 0.3.0: End Of Life
+- Feature is now bundled in vim-mode-plus itself.
+- So will un-publish soon.
+- So Added deprecation warning on pkg activation.
+
 ## 0.2.0
 - Maintenance:
   - Convert Coffee-to-JS

@@ -2,7 +2,7 @@
   "name": "vim-mode-plus-replace-with-execution",
   "main": "./lib/main",
   "version": "0.2.0",
-  "description": "TransformString with result of execution",
+  "description": "[Depreacated] now bundled into vim-mode-plus",
   "repository": "https://github.com/t9md/atom-vim-mode-plus-replace-with-execution",
   "license": "MIT",
   "engines": {
