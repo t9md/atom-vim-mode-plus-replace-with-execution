@@ -1,8 +1,3 @@
-# Deprecated: No longer maintained
-
-- vim-mode-plus(>= v1.14.0) bundles feature which was provided by this package.
-- So you no longer need this package.
-
 [![Build Status](https://travis-ci.org/t9md/atom-vim-mode-plus-replace-with-execution.svg?branch=master)](https://travis-ci.org/t9md/atom-vim-mode-plus-replace-with-execution)
 
 # vim-mode-plus-replace-with-execution
