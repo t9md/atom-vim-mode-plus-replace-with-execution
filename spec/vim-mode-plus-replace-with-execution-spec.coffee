@@ -17,7 +17,7 @@ describe "vim-mode-plus-replace-with-execution", ->
     waitsForPromise ->
       atom.packages.activatePackage('vim-mode-plus-replace-with-execution')
 
-  describe "replace-with-execution", ->
+  describe "ReplaceWithExecution", ->
     beforeEach ->
       getVimState (state, vim) ->
         vimState = state
@@ -25,16 +25,12 @@ describe "vim-mode-plus-replace-with-execution", ->
         {set, ensure, ensureWait} = vim
 
       runs ->
-        set
-          text: """
-          echo ABC\n
-          """
-          cursor: [0, 0]
+        set textC: "|echo ABC\n"
 
-    it "replace with execution", ->
-      ensureWait 'V ctrl-r',
-        text: "ABC\n"
+    describe "replace with execution result", ->
+      it "normal", -> ensureWait 'ctrl-r $', text: "ABC\n", mode: 'normal'
+      it "visual", -> ensureWait 'V ctrl-r', text: "ABC\n", mode: 'normal'
 
-    it "replace with execution and keeping keep original text", ->
-      ensureWait 'V ctrl-R',
-        text: "echo ABC\nABC\n"
+    describe "replace with execution result with keep original text", ->
+      it "normal", -> ensureWait 'ctrl-R $', text: "echo ABC\nABC\n", mode: 'normal'
+      it "visual", -> ensureWait 'V ctrl-R', text: "echo ABC\nABC\n", mode: 'normal'
