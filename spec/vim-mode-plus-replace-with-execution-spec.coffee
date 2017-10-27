@@ -5,7 +5,7 @@ requireFrom = (pack, path) ->
 {getVimState} = requireFrom 'vim-mode-plus', 'spec/spec-helper'
 
 describe "vim-mode-plus-replace-with-execution", ->
-  [set, ensure, keystroke, editor, editorElement, vimState] = []
+  [set, ensure, ensureWait, editor, editorElement, vimState] = []
 
   beforeEach ->
     atom.keymaps.add "test",
@@ -22,7 +22,7 @@ describe "vim-mode-plus-replace-with-execution", ->
       getVimState (state, vim) ->
         vimState = state
         {editor, editorElement} = state
-        {set, ensure, keystroke} = vim
+        {set, ensure, ensureWait} = vim
 
       runs ->
         set
@@ -32,11 +32,9 @@ describe "vim-mode-plus-replace-with-execution", ->
           cursor: [0, 0]
 
     it "replace with execution", ->
-      keystroke('V ctrl-r', waitsForFinish: true)
-      runs ->
-        ensure text: "ABC\n"
+      ensureWait 'V ctrl-r',
+        text: "ABC\n"
 
     it "replace with execution and keeping keep original text", ->
-      keystroke('V ctrl-R', waitsForFinish: true)
-      runs ->
-        ensure text: "echo ABC\nABC\n"
+      ensureWait 'V ctrl-R',
+        text: "echo ABC\nABC\n"
