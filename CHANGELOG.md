@@ -1,3 +1,7 @@
+## 0.3.1: WIP
+- Update `registerCommandFromSpec` call to conform to vmp changes.
+  - Detail: https://github.com/t9md/atom-vim-mode-plus/pull/958
+
 ## 0.3.0:
 - Update to confirm with upstream vmp-core change.
 
